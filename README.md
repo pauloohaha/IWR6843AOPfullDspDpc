@@ -12,6 +12,7 @@ Use the *xwr68xx_mmw_demo_mss.xer4f* and *xwr68xx_mmw_demo_dss.xe674* to load in
 ### Compilation
 Copy the *mmw_res.h* to the installed SDK path (mmwave_sdk_03_05_00_04\packages\ti\demo\xwr68xx\mmw) to replace the original *mmw_res.h* (remember to back up it). Then run the setenv.bat at *mmwave_sdk_03_05_00_04\packages\scripts\windows* though command line then cd to this folder and run *gmake clean* and *gmake all*.
 
+More details can be viewed at the 4.5 section of the mmwave sdk userguide.  
 ## Intro
 The out of box demos provided by the TI for IWR6843AOP use either full HWA or HWA+DSP data path to do the data processing, both of which uses HWA to do the range FFT. This prevent us from accessing the raw ADC buffer data directly, since the HWA destroy the ADC buffer data after FFT is done. Besides, DSP is also easier to control and program than HWA. Thus, realizing a full DSP data path is helpful for the development.  
 
