@@ -1,7 +1,7 @@
 # Realizing full DSP data processing chain in IWR6843AOP
 
 In this repository, I will introduce how to realize full DSP DPC for out of box demo in IWR6843AOP for your reference.
-Link to the full [DSP DPC code](https://github.com/pauloohaha/mmwave-radar-from-first-taste-to-give-up/blob/main/xwr68xxFullDPC.zip):
+Link to the full [DSP DPC code](https://github.com/pauloohaha/IWR6843AOPfullDspDpc/blob/main/xwr68xxFullDPC.zip):
 
 ## Usage
 ### CCS debug
