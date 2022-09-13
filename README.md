@@ -59,7 +59,7 @@ For DPM initialization, set the *ptrProcChainCfg* to NULL to disable DPC initial
 >![image](https://user-images.githubusercontent.com/85469000/189803819-5987f5a2-1af1-46c6-ab69-69c2c5c60749.png)  
 
   
-In *MmwDemo_dataPathConfig()*, we need to delete the DPM initialization of rangeProcHWA.  
+In *MmwDemo_dataPathConfig()*, we need to delete the DPM initialization of rangeProcHWA DPU.  
 From line 2023 to 2035, the code call DPM_ioctl to set the pre start common config the rangeProcHWA DPU, delete them.
 >![image](https://user-images.githubusercontent.com/85469000/189804185-0d172d8a-20b8-4645-b52c-716bffda9e85.png)  
 
