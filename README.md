@@ -1,7 +1,9 @@
 # Realizing full DSP data processing chain in IWR6843AOP
 
-In this repository, I will introduce how to realize full DSP DPC for out of box demo in IWR6843AOP for your reference.
+In this repository, I will introduce how to realize full DSP DPC for out of box demo in IWR6843AOP for your reference. If I have made any mistake, which is quite possible, please kindly point it out for me.    
 Link to the full [DSP DPC code](https://github.com/pauloohaha/IWR6843AOPfullDspDpc/blob/main/xwr68xxFullDPC.zip):
+
+You are expected to be familiar with the radar already to understand this document. I assume you have read the documents such as *mmwave_sdk_user_guide*, *introduction to the DSP Subsystem in the IWR6843*, the source code for the DPM, DPC, mmwaveDemo and so on.
 
 ## Usage
 ### CCS debug
@@ -13,7 +15,7 @@ Copy the *mmw_res.h* to the installed SDK path (mmwave_sdk_03_05_00_04\packages\
 ## Intro
 The out of box demos provided by the TI for IWR6843AOP use either full HWA or HWA+DSP data path to do the data processing, both of which uses HWA to do the range FFT. This prevent us from accessing the raw ADC buffer data directly, since the HWA destroy the ADC buffer data after FFT is done. Besides, DSP is also easier to control and program than HWA. Thus, realizing a full DSP data path is helpful for the development.  
 
-However, TI only provide demo code that uses full DSP DPC for xWR16xx. We need to realise the full DSP DPC for IWR6843 on our own.  
+However, TI only provide demo code that uses full DSP DPC for xWR16xx. We need to realise the full DSP DPC for IWR6843AOP on our own.  
   
 In this document, I will introduce how to modify the out of box demo from mmave sdk 3.5 for IWR6843AOP to realize a full DSP DPC.  
   
@@ -34,19 +36,20 @@ Since now we do not use the HWA object detection, we change the  *#include <ti/d
 
 ### mmw_mss.mak
 In *mmw_mss.mak*, we need to disable the reference to the HWA:  
-At row 31, delet the reference for *librangeproc_hwa_xwr68xx.aer4f*.  
-In the below picture, the left is the modified and right is the original:  
+At row 31, delete the reference for *librangeproc_hwa_xwr68xx.aer4f*.  
+In the pictures below, the left is the modified and right is the original:  
 ![image](https://user-images.githubusercontent.com/85469000/189803098-37407bcc-1bdf-4da1-9124-e9cf5fa344ed.png)  
 
-At row 82, delet the reference to the *objdetrangehwa.c*, thus it will not be included during compilation.:   
+At row 82, delete the reference to the *objdetrangehwa.c*, thus it will not be included during compilation.:   
 ![image](https://user-images.githubusercontent.com/85469000/189803409-1626f56d-d2c4-4645-b3d5-852dead755a9.png)
 
-At row 102, delet the marco defination of *OBJDET_NO_RANGE* to enable the code for DSP range processing. Remember to delet the entire line and make sure that there is no a empty line here.  
+At row 102, delete the marco defination of *OBJDET_NO_RANGE* to enable the code for DSP range processing. Remember to delete the entire line and make sure that there is not a empty line here.  
 >![image](https://user-images.githubusercontent.com/85469000/189803463-d0a64bc6-a433-4edf-ac00-d018d067681a.png)
   
 ### mss_main.c
 At the line 4077 and 4088 of *mss_main.c*, the *MmwDemo_initTask()* call the 2 functions for HWA init and open. Since we do not need HWA at all, we simply delet these 2 lines and the definations of these 2 functions.  
 ![image](https://user-images.githubusercontent.com/85469000/189802158-37375cf4-ae76-4385-a4c1-fed8ad022b5f.png)  
+![image](https://user-images.githubusercontent.com/85469000/189820964-d2dbdb4e-c96b-4c03-86b9-e24dcf92a0e9.png)  
   
 Therefore, change the DPC init parameters variable:  
 >![image](https://user-images.githubusercontent.com/85469000/189802640-40d9a67f-81f1-4b61-b44e-87b9ae66c5ff.png)  
@@ -55,14 +58,14 @@ For DPM initialization, set the *ptrProcChainCfg* to NULL to disable DPC initial
 >![image](https://user-images.githubusercontent.com/85469000/189803819-5987f5a2-1af1-46c6-ab69-69c2c5c60749.png)  
 
   
-In *MmwDemo_dataPathConfig()*, we need to delet the DPM initialization of rangeProcHWA.  
-From line 2023 to 2035, the code call DPM_ioctl to set the pre start common config the rangeProcHWA DPU, delet them.
+In *MmwDemo_dataPathConfig()*, we need to delete the DPM initialization of rangeProcHWA.  
+From line 2023 to 2035, the code call DPM_ioctl to set the pre start common config the rangeProcHWA DPU, delete them.
 >![image](https://user-images.githubusercontent.com/85469000/189804185-0d172d8a-20b8-4645-b52c-716bffda9e85.png)  
 
-From line 2197 ti 2209, the code call MmwDemo_DPM_ioctl_blocking, which is basically a DPM_ioctl that halt the program before finish, to set the rangeProcHWA DPU pre start config, delet them.  
+From line 2197 ti 2209, the code call MmwDemo_DPM_ioctl_blocking, which is basically a DPM_ioctl that halt the program before finish, to set the rangeProcHWA DPU pre start config, delete them.  
 >![image](https://user-images.githubusercontent.com/85469000/189804429-2d1fc181-0b7b-42c0-9457-9a701f38d95c.png)  
 
-Since now the *preStartCommonCfg* is never referenced, delet its declearation.  
+Since now the *preStartCommonCfg* is never referenced, delete its declearation.  
 >![image](https://user-images.githubusercontent.com/85469000/189804603-e12c96e4-f1f8-4d95-b25b-cafb28cabf5b.png)
 
 In this way, we have disable all HWA initialization.  
@@ -72,7 +75,9 @@ In this way, we have disable all HWA initialization.
 In mmw_dss.mak, we should include the reference to the rangeprocDSP. First, include the *librangeproc_dsp_xwr68xx.ae674* and its path:  
 >![image](https://user-images.githubusercontent.com/85469000/189805009-6b91a890-5661-4677-9090-c8f6cb7fe838.png)  
 
-Delet the defination of *OBJDET_NO_RANGE* at line 79 to enable code for the rangeProcDSP. Remember to delet the entire line and make sure that there is no a empty line here.
+Delete the defination of *OBJDET_NO_RANGE* at line 79 to enable code for the rangeProcDSP. Remember to delete the entire line and make sure that there is not a empty line here.
+>![image](https://user-images.githubusercontent.com/85469000/189821243-f05b3e10-f457-4c0f-9dc1-7e2c2a00c53e.png)
+
 
 ### dss_main.c
 The only change here is to set the domain to REMOTE mode.  
@@ -84,9 +89,9 @@ The only change here is to set the domain to REMOTE mode.
 >![image](https://user-images.githubusercontent.com/85469000/189814834-ba97964d-0436-4990-b137-33772af51e7b.png)
 
 ## Set the correct resource allocation
-EDMA instances and handles are allocated to each DPU in *mmw_res.h*. Since the changes are quit complex compared to the originbal HWA+DSP DPC, we directly use the *mmw_res.h* from the xWR16xx demo.  
+EDMA instances and handles are allocated to each DPU in *mmw_res.h*. Since the changes are quit complex compared to the original HWA+DSP DPC, we directly use the *mmw_res.h* from the xWR16xx demo.  
 
-In the *mmw_mss.mak* and *mmw_dss.mak*, the path to *mmw_res.h* is specified as the original path to the mmw_demo folder, we need to make change to the original *mss_res.h* file.  
+In the *mmw_mss.mak* and *mmw_dss.mak*, the path to *mmw_res.h* is specified as the original path to the mmw_demo folder, we need to make change to the original *mss_res.h* file in the *mmwave_sdk_03_05_00_04\packages\ti\demo\xwr68xx\mmw* folder:  
 ![image](https://user-images.githubusercontent.com/85469000/189815596-bfc09b5c-e93b-4f84-a866-512c2edb31a1.png)
 
 After copying the *mme_res.h* from xWR16xx demo folder to the xWR68xx folder, we need to add following defination into it. The IWR6843AOP has 2 EDMA channel controller, which is the 2 EDMA instance, one is allocated to the MSS and the other is allocated to the DSS. Since the DPC is realised entirly on DSP, the DPC EDMA instance uses the DSP EDMA instance.  
