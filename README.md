@@ -3,7 +3,7 @@
 In this repository, I will introduce how to realize full DSP DPC for out of box demo in IWR6843AOP for your reference. If I have made any mistake, which is quite possible, please kindly point it out for me.    
 Link to the full [DSP DPC code](https://github.com/pauloohaha/IWR6843AOPfullDspDpc/blob/main/xwr68xxFullDPC.zip):
 
-I expecte the reader to be familiar with the radar already to understand this document. I assume you have read the documents such as *mmwave_sdk_user_guide*, *introduction to the DSP Subsystem in the IWR6843*, the source code for the DPM, DPC, mmwaveDemo and so on.
+I expect the reader to be familiar with the radar already to understand this document. I assume you have read the documents such as *mmwave_sdk_user_guide*, *introduction to the DSP Subsystem in the IWR6843*, the source code for the DPM, DPC, mmwaveDemo and so on.
 
 ## Usage
 ### CCS debug
