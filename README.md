@@ -5,6 +5,8 @@ Link to the full [DSP DPC code](https://github.com/pauloohaha/IWR6843AOPfullDspD
 
 I expect the reader to be familiar with the radar already to understand this document. I assume you have read the documents such as *mmwave_sdk_user_guide*, *introduction to the DSP Subsystem in the IWR6843*, the source code for the DPM, DPC, mmwaveDemo and so on.
 
+Reference:  https://e2e.ti.com/support/sensors-group/sensors/f/sensors-forum/952466/ccs-awr1843boost-dpc-of-dsp
+
 ## Usage
 ### CCS debug
 Use the *xwr68xx_mmw_demo_mss.xer4f* and *xwr68xx_mmw_demo_dss.xe674* to load into the r4f and c674 in the CCS debug mode with MMWAVEICBOOST to run the code.  
